@@ -12,10 +12,10 @@ It adds to the official Rust image:
 
 and the following rustup targets:
 
-- thumbv6m-none-eabi
-- thumbv7m-none-eabi
-- thumbv7em-none-eabi
-- thumbv7em-none-eabihf
+- `thumbv6m-none-eabi` for Cortex-M0 and Cortex-M0+
+- `thumbv7m-none-eabi` for Cortex-M3
+- `thumbv7em-none-eabi` for Cortex-M4 and Cortex-M7 (no FPU)
+- `thumbv7em-none-eabihf` for Cortex-M4F and Cortex-M7F (with FPU)
 
 ## Building the container
 
