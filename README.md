@@ -23,7 +23,7 @@ The container can be build locally with the `build.sh` script.
 You need `buildah` or `docker` to build it.
 The container's repository will be `localhost/calinradoni/rust-stm32` and the tag will be `1.44`.
 
-You can also get it from [Docker Hub](https://hub.docker.com/) .
+You can also get it from [Docker Hub](https://hub.docker.com/r/calinradoni/rust-stm32) .
 
 ## Usage
 
