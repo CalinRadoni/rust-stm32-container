@@ -1,4 +1,4 @@
-# rust-smt32
+# rust-stm32-container
 
 This is a container for programming STM32 controllers in Rust.
 
