@@ -21,7 +21,7 @@ and the following rustup targets:
 
 The container can be build locally with the `build.sh` script.
 You need `buildah` or `docker` to build it.
-The container's repository will be `localhost/rust-stm32` and the tag will be `1.44`.
+The container's repository will be `localhost/calinradoni/rust-stm32` and the tag will be `1.44`.
 
 You can also get it from [Docker Hub](https://hub.docker.com/) .
 
@@ -47,7 +47,7 @@ podman run --rm -it \
     --env USER=$USER \
     --volume $PWD:/source \
     --workdir /source \
-    localhost/rust-stm32:1.44
+    calinradoni/rust-stm32:1.44
 ```
 
 In this case `CARGO HOME` is inside the container and is not persistent.
@@ -72,7 +72,7 @@ podman run --rm -it \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
     --device=/dev/bus/usb/001/007 \
-    localhost/rust-stm32:1.44
+    calinradoni/rust-stm32:1.44
 ```
 
 ### With connected board
@@ -97,7 +97,7 @@ podman run --rm -it \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
     --device=/dev/bus/usb/001/007 \
-    localhost/rust-stm32:1.44
+    calinradoni/rust-stm32:1.44
 ```
 
 You need to set some dev permissions. Read on.
