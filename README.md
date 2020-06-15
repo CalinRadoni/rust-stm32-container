@@ -71,7 +71,6 @@ podman run --rm -it \
     --volume $PWD:/source \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
-    --device=/dev/bus/usb/001/007 \
     calinradoni/rust-stm32:1.44
 ```
 
