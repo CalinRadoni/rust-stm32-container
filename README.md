@@ -76,7 +76,7 @@ podman run --rm -it \
 
 ### With connected board
 
-### ST-LINK access permissions
+#### ST-LINK access permissions
 
 You need to set some udev permissions to be able to access the ST-LINK from a non-root account.
 
@@ -107,7 +107,7 @@ sudo udevadm control --reload-rules
 
 If a ST-LINK board was plugged, unplug it then plug it again.
 
-### Usage
+#### Usage
 
 With a board connected through a ST-LINK interface, run `ls /dev/stlink*` to find the corresponding device then start the container
 with the `--device` option.
@@ -134,4 +134,4 @@ podman run --rm -it \
 
 ## License
 
-The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
