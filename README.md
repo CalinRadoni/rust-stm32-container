@@ -76,17 +76,50 @@ podman run --rm -it \
 
 ### With connected board
 
-With a board connected through a ST-LINK interface, run `lsusb` to find the corresponding device.
+### ST-LINK access permissions
 
-**Example:** for this output of `lsusb`:
+You need to set some udev permissions to be able to access the ST-LINK from a non-root account.
 
-```txt
-Bus 001 Device 007: ID 0483:3748 STMicroelectronics ST-LINK/V2
+See the better approach from my [Non-root access for ST-LINK and USB-to-serial devices](https://calinradoni.github.io/pages/200616-non-root-access-usb.html) article or use the *quick* procedure from this section.
+
+On the host, create and execute this script:
+
+```sh
+#!/bin/bash
+
+sudo tee /etc/udev/rules.d/70-st-link.rules > /dev/null <<'EOF'
+# ST-LINK V2
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv2_%n"
+
+# ST-LINK V2.1
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv2-1_%n"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3752", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv2-1_%n"
+
+# ST-LINK V3
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374d", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv3loader_%n"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374e", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv3_%n"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374f", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv3_%n"
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3753", MODE="600", TAG+="uaccess", SYMLINK+="stlinkv3_%n"
+EOF
+
+sudo udevadm control --reload-rules
 ```
 
-the ST-LINK device is `/dev/bus/usb/001/007` .
+If a ST-LINK board was plugged, unplug it then plug it again.
 
-Start the container with:
+### Usage
+
+With a board connected through a ST-LINK interface, run `ls /dev/stlink*` to find the corresponding device then start the container
+with the `--device` option.
+
+**Example** for a ST-LINK V2 interface:
+
+```bash
+$ ls /dev/stlink*
+/dev/stlinkv2_5
+```
+
+start the container with:
 
 ```sh
 podman run --rm -it \
@@ -95,37 +128,9 @@ podman run --rm -it \
     --volume $PWD:/source \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
-    --device=/dev/bus/usb/001/007 \
+    --device=/dev/stlinkv2_5 \
     calinradoni/rust-stm32:1.44
 ```
-
-You need to set some dev permissions. Read on.
-
-### dev permissions
-
-To be able to access the ST-LINK from a non-root account, on the host, create the file:
-
-```sh
-sudo vi /etc/udev/rules.d/70-st-link.rules
-```
-
-with the following content:
-
-```ini
-# STM32F3DISCOVERY rev A/B - ST-LINK/V2
-ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", TAG+="uaccess"
-
-# STM32F3DISCOVERY rev C+ - ST-LINK/V2-1
-ATTRS{idVendor}=="0483", ATTRS{idProduct}=="374b", TAG+="uaccess"
-```
-
-then reload all the udev rules:
-
-```sh
-sudo udevadm control --reload-rules
-```
-
-If a ST-LINK board was plugged, unplug it then plug it again.
 
 ## License
 
