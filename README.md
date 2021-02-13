@@ -1,6 +1,14 @@
 # rust-stm32-container
 
-This is a container for programming STM32 controllers in Rust.
+This container is for programming STM32 controllers in Rust.
+
+The variants are:
+
+- `rust-stm32:alpine`
+- `rust-stm32:buster`
+- `rust-stm32:slim`
+
+from `docker.io/library/rust` alpine, buster and slim tags.
 
 It adds to the official Rust image:
 
@@ -10,20 +18,34 @@ It adds to the official Rust image:
 - cargo-generate
 - llvm-tools-preview rustup component
 
-and the following rustup targets:
+and these rustup targets:
 
 - `thumbv6m-none-eabi` for Cortex-M0 and Cortex-M0+
 - `thumbv7m-none-eabi` for Cortex-M3
 - `thumbv7em-none-eabi` for Cortex-M4 and Cortex-M7 (no FPU)
 - `thumbv7em-none-eabihf` for Cortex-M4F and Cortex-M7F (with FPU)
 
-## Building the container
+## Builder
 
-The container can be build locally with the `build.sh` script.
-You need `buildah` or `docker` to build it.
-The container's repository will be `localhost/calinradoni/rust-stm32` and the tag will be `1.44`.
+You need `buildah` or `docker` to build them.
 
-You can also get it from [Docker Hub](https://hub.docker.com/r/calinradoni/rust-stm32) .
+Build the containers locally with the `create-variants.sh` script:
+
+- run `create-variants.sh` without parameters to create the Dockerfiles
+- run `create-variants.sh -b` to build them
+- run `create-variants.sh -l` to list generated containers
+
+To build a single container call `buildah` or `podman` directly:
+
+```sh
+# for Docker use:
+docker build --tag calinradoni/rust-stm32:buster buster
+
+# for Podman use:
+buildah build-using-dockerfile --tag calinradoni/rust-stm32:buster buster
+```
+
+You can also get them from [Docker Hub](https://hub.docker.com/r/calinradoni/rust-stm32) .
 
 ## Usage
 
@@ -31,10 +53,11 @@ You can also get it from [Docker Hub](https://hub.docker.com/r/calinradoni/rust-
 - For building only use [Without connected board](#without-connected-board) or [With connected board](#with-connected-board)
 - Use [Simple usage](#simple-usage) for testing this image. It can also be used for building, if you wish.
 
-Read about `CARGO HOME` environment variable: [CARGO HOME](https://doc.rust-lang.org/cargo/guide/cargo-home.html) functions as a download and
-source cache. When building a crate, Cargo stores downloaded build dependencies in the Cargo home.
+Read about `CARGO HOME` environment variable: [CARGO HOME](https://doc.rust-lang.org/cargo/guide/cargo-home.html) functions as a download and source cache. When building a crate, Cargo stores downloaded build 
+dependencies in the Cargo home.
 
-**Note:** I use [Podman](https://podman.io/). To use [Docker](https://www.docker.com/) just replace `podman` with `docker` in examples.
+**Note:** I use [Podman](https://podman.io/). To use [Docker](https://www.docker.com/) just replace
+`podman` with `docker` in examples.
 
 ### Simple usage
 
@@ -47,7 +70,7 @@ podman run --rm -it \
     --env USER=$USER \
     --volume $PWD:/source \
     --workdir /source \
-    calinradoni/rust-stm32:1.44
+    calinradoni/rust-stm32:buster
 ```
 
 In this case `CARGO HOME` is inside the container and is not persistent.
@@ -71,7 +94,7 @@ podman run --rm -it \
     --volume $PWD:/source \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
-    calinradoni/rust-stm32:1.44
+    calinradoni/rust-stm32:buster
 ```
 
 ### With connected board
@@ -109,8 +132,8 @@ If a ST-LINK board was plugged, unplug it then plug it again.
 
 #### Usage
 
-With a board connected through a ST-LINK interface, run `ls /dev/stlink*` to find the corresponding device then start the container
-with the `--device` option.
+With a board connected through a ST-LINK interface, run `ls /dev/stlink*` to find the corresponding
+device then start the container with the `--device` option.
 
 **Example** for a ST-LINK V2 interface:
 
@@ -129,7 +152,7 @@ podman run --rm -it \
     --volume $HOME/.cargo:/cargo \
     --workdir /source \
     --device=/dev/stlinkv2_5 \
-    calinradoni/rust-stm32:1.44
+    calinradoni/rust-stm32:buster
 ```
 
 ## License
