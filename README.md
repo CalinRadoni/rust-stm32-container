@@ -4,9 +4,9 @@ This container is for programming STM32 controllers in Rust.
 
 The variants are:
 
-- `rust-stm32:alpine`
 - `rust-stm32:buster`
 - `rust-stm32:slim`
+- `rust-stm32:alpine` is removed until the `segfault` from `cargo generate` is solved
 
 from `docker.io/library/rust` alpine, buster and slim tags.
 
@@ -16,6 +16,7 @@ It adds to the official Rust image:
 - openocd
 - cargo-binutils
 - cargo-generate
+- cargo-flash
 - llvm-tools-preview rustup component
 
 and these rustup targets:

@@ -1,9 +1,10 @@
 #!/bin/bash
 
 script_name="Builder for rust-stm32-container"
-script_version="1.2.0"
+script_version="1.2.1"
 
-versions=("buster" "slim" "alpine")
+#versions=("buster" "slim" "alpine")
+versions=("buster" "slim")
 
 echo "$script_name, version $script_version"
 
